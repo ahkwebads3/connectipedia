@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نتائج التحليل - أداة تحليل الجمهور المستهدف</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        .persona-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+        .persona-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+            color: white;
+        }
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .platform-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 12px;
+        }
+        .chart-container {
+            height: 300px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-2xl font-bold gradient-text">👨‍💼 د. عمرو جلال</a>
+                </div>
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <button onclick="exportToPDF()" class="bg-blue-800 text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors">
+                        📄 تحميل PDF
+                    </button>
+                    <button onclick="copyToClipboard()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                        📋 نسخ
+                    </button>
+                    <a href="questions.html" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                        تحليل جديد
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Header -->
+            <div class="text-center mb-12 fade-in-up">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">تحليل الجمهور المستهدف</h1>
+                <p class="text-xl text-gray-600">نتائج تحليل الذكاء الاصطناعي لجمهورك المثالي</p>
+                <div class="mt-6 flex justify-center">
+                    <div class="bg-green-100 text-green-800 px-4 py-2 rounded-lg">
+                        ✅ التحليل مكتمل - الوقت: 2:45 دقيقة
+                    </div>
+                </div>
+            </div>
+
+            <!-- Executive Summary -->
+            <section class="mb-12 fade-in-up">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="text-3xl mr-4">📊</div>
+                        <h2 class="text-2xl font-bold text-gray-800">ملخص تنفيذي</h2>
+                    </div>
+                    <div class="bg-blue-50 rounded-lg p-6">
+                        <p class="text-lg text-gray-700 leading-relaxed" id="executive-summary">
+                            بناءً على تحليل إجاباتك، جمهورك المثالي هم <span class="bg-blue-200 px-2 py-1 rounded font-semibold">الشباب المهنيين من سن 26-35 سنة</span> الذين يعيشون في المدن الكبرى ويبحثون عن حلول تساعدهم في توفير الوقت والجهد. يفضل هذا الجمهور المحتوى التعليمي الاحترافي على منصات التواصل الاجتماعي، ويهتم بالجودة العالية قبل السعر.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Statistics -->
+            <section class="mb-12 fade-in-up">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="stat-card bg-blue-800 rounded-lg p-6 text-center">
+                        <div class="text-3xl font-bold mb-2">3</div>
+                        <div class="text-blue-100">شخصيات مستهدفة</div>
+                    </div>
+                    <div class="stat-card bg-blue-800 rounded-lg p-6 text-center">
+                        <div class="text-3xl font-bold mb-2">85%</div>
+                        <div class="text-blue-100">نسبة الاهتمام</div>
+                    </div>
+                    <div class="stat-card bg-blue-800 rounded-lg p-6 text-center">
+                        <div class="text-3xl font-bold mb-2">4</div>
+                        <div class="text-blue-100">منصات رئيسية</div>
+                    </div>
+                    <div class="stat-card bg-blue-800 rounded-lg p-6 text-center">
+                        <div class="text-3xl font-bold mb-2">92%</div>
+                        <div class="text-blue-100">دقة التوقع</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Buyer Personas -->
+            <section class="mb-12 fade-in-up">
+                <div class="flex items-center mb-8">
+                    <div class="text-3xl mr-4">👥</div>
+                    <h2 class="text-2xl font-bold text-gray-800">شخصيات المشترين</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Persona 1 -->
+                    <div class="persona-card rounded-lg p-6 shadow-lg">
+                        <div class="text-center mb-6">
+                            <img src="./resources/persona-1.jpg" alt="سارة المهندس" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                            <h3 class="text-xl font-bold text-gray-800">سارة المهندس</h3>
+                            <p class="text-gray-600">مديرة تسويق - 29 سنة</p>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">الأهداف:</h4>
+                                <ul class="text-gray-600 text-sm space-y-1">
+                                    <li>• تطوير مهاراتها المهنية</li>
+                                    <li>• تحقيق توازن بين العمل والحياة</li>
+                                    <li>• بناء شبكة علاقات قوية</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">نقاط الألم:</h4>
+                                <ul class="text-gray-600 text-sm space-y-1">
+                                    <li>• قلة الوقت للتعلم</li>
+                                    <li>• صعوبة الوصول لمحتوى موثوق</li>
+                                    <li>• الحاجة لحلول سريعة</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">المفضلة:</h4>
+                                <div class="flex space-x-2 space-x-reverse">
+                                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">انستجرام</span>
+                                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">لينكدإن</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Persona 2 -->
+                    <div class="persona-card rounded-lg p-6 shadow-lg">
+                        <div class="text-center mb-6">
+                            <img src="./resources/persona-2.jpg" alt="أحمد المدير" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                            <h3 class="text-xl font-bold text-gray-800">أحمد المدير</h3>
+                            <p class="text-gray-600">رئيس قسم - 34 سنة</p>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">الأهداف:</h4>
+                                <ul class="text-gray-600 text-sm space-y-1">
+                                    <li>• زيادة إنتاجية الفريق</li>
+                                    <li>• تقليل التكاليف</li>
+                                    <li>• تحسين العمليات</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">نقاط الألم:</h4>
+                                <ul class="text-gray-600 text-sm space-y-1">
+                                    <li>• تعقيدات العمل اليومي</li>
+                                    <li>• صعوبة التنسيق</li>
+                                    <li>• الحاجة لحلول متكاملة</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">المفضلة:</h4>
+                                <div class="flex space-x-2 space-x-reverse">
+                                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">فيسبوك</span>
+                                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">تويتر</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Persona 3 -->
+                    <div class="persona-card rounded-lg p-6 shadow-lg">
+                        <div class="text-center mb-6">
+                            <img src="./resources/persona-3.jpg" alt="ليلى رائدة الأعمال" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                            <h3 class="text-xl font-bold text-gray-800">ليلى رائدة الأعمال</h3>
+                            <p class="text-gray-600">صاحبة مشروع - 31 سنة</p>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">الأهداف:</h4>
+                                <ul class="text-gray-600 text-sm space-y-1">
+                                    <li>• توسيع عملها</li>
+                                    <li>• تعلم استراتيجيات جديدة</li>
+                                    <li>• بناء فريق قوي</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">نقاط الألم:</h4>
+                                <ul class="text-gray-600 text-sm space-y-1">
+                                    <li>• محدودية الموارد</li>
+                                    <li>• الحاجة لدعم مستمر</li>
+                                    <li>• صعوبة اتخاذ القرار</li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">المفضلة:</h4>
+                                <div class="flex space-x-2 space-x-reverse">
+                                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">انستجرام</span>
+                                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">لينكدإن</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Platform Recommendations -->
+            <section class="mb-12 fade-in-up">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="text-3xl mr-4">📱</div>
+                        <h2 class="text-2xl font-bold text-gray-800">المنصات الم recomended</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="text-center">
+                            <div class="platform-icon bg-gradient-to-br from-purple-500 to-pink-500 text-white">📷</div>
+                            <h3 class="font-semibold text-gray-800 mb-2">انستجرام</h3>
+                            <p class="text-gray-600 text-sm">أفضل للمحتوى المرئي والقصص</p>
+                            <div class="mt-2">
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">ممتاز</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="platform-icon bg-blue-600 text-white">📘</div>
+                            <h3 class="font-semibold text-gray-800 mb-2">فيسبوك</h3>
+                            <p class="text-gray-600 text-sm">مناسب للمجتمعات والمجموعات</p>
+                            <div class="mt-2">
+                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">جيد</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="platform-icon bg-blue-400 text-white">🐦</div>
+                            <h3 class="font-semibold text-gray-800 mb-2">تويتر</h3>
+                            <p class="text-gray-600 text-sm">مثالي للمحادثات والتحديثات</p>
+                            <div class="mt-2">
+                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">جيد</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="platform-icon bg-blue-700 text-white">💼</div>
+                            <h3 class="font-semibold text-gray-800 mb-2">لينكدإن</h3>
+                            <p class="text-gray-600 text-sm">للمحتوى الاحترافي والشبكات</p>
+                            <div class="mt-2">
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">ممتاز</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Engagement Chart -->
+                    <div class="chart-container" id="engagement-chart"></div>
+                </div>
+            </section>
+
+            <!-- Content Strategy -->
+            <section class="mb-12 fade-in-up">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="text-3xl mr-4">📝</div>
+                        <h2 class="text-2xl font-bold text-gray-800">استراتيجية المحتوى</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg">
+                            <div class="text-4xl mb-4">🎥</div>
+                            <h3 class="font-semibold text-gray-800 mb-2">فيديو</h3>
+                            <p class="text-gray-600 text-sm mb-4">محتوى تعليمي قصير ومرئي</p>
+                            <div class="text-2xl font-bold text-blue-600">60%</div>
+                        </div>
+                        <div class="text-center p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-lg">
+                            <div class="text-4xl mb-4">📷</div>
+                            <h3 class="font-semibold text-gray-800 mb-2">صور</h3>
+                            <p class="text-gray-600 text-sm mb-4">انفوجرافيك وصور توضيحية</p>
+                            <div class="text-2xl font-bold text-green-600">25%</div>
+                        </div>
+                        <div class="text-center p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
+                            <div class="text-4xl mb-4">📄</div>
+                            <h3 class="font-semibold text-gray-800 mb-2">مقالات</h3>
+                            <p class="text-gray-600 text-sm mb-4">محتوى تفصيلي ومعلوماتي</p>
+                            <div class="text-2xl font-bold text-purple-600">15%</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tone of Voice -->
+            <section class="mb-12 fade-in-up">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="text-3xl mr-4">💬</div>
+                        <h2 class="text-2xl font-bold text-gray-800">نبرة الصوت</h2>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h3 class="font-semibold text-gray-800 mb-4">السمات الرئيسية:</h3>
+                                <ul class="space-y-2">
+                                    <li class="flex items-center space-x-2 space-x-reverse">
+                                        <span class="text-green-500">✓</span>
+                                        <span class="text-gray-700">احترافية وموثوقة</span>
+                                    </li>
+                                    <li class="flex items-center space-x-2 space-x-reverse">
+                                        <span class="text-green-500">✓</span>
+                                        <span class="text-gray-700">معلوماتية ومفيدة</span>
+                                    </li>
+                                    <li class="flex items-center space-x-2 space-x-reverse">
+                                        <span class="text-green-500">✓</span>
+                                        <span class="text-gray-700">ودودة ومقربة</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800 mb-4">الأسلوب:</h3>
+                                <ul class="space-y-2">
+                                    <li class="flex items-center space-x-2 space-x-reverse">
+                                        <span class="text-blue-500">•</span>
+                                        <span class="text-gray-700">استخدام أمثلة واقعية</span>
+                                    </li>
+                                    <li class="flex items-center space-x-2 space-x-reverse">
+                                        <span class="text-blue-500">•</span>
+                                        <span class="text-gray-700">تقديم حلول عملية</span>
+                                    </li>
+                                    <li class="flex items-center space-x-2 space-x-reverse">
+                                        <span class="text-blue-500">•</span>
+                                        <span class="text-gray-700">التركيز على القيمة</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Action Items -->
+            <section class="mb-12 fade-in-up">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="text-3xl mr-4">🎯</div>
+                        <h2 class="text-2xl font-bold text-gray-800">أولويات العمل</h2>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center p-4 bg-green-50 rounded-lg">
+                            <div class="text-green-600 text-xl mr-4">1</div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">إنشاء محتوى تعليمي قصير</h3>
+                                <p class="text-gray-600 text-sm">ركز على فيديوهات 60 ثانية لانستجرام و reels</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-4 bg-yellow-50 rounded-lg">
+                            <div class="text-yellow-600 text-xl mr-4">2</div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">بناء مجتمع على فيسبوك</h3>
+                                <p class="text-gray-600 text-sm">أنشئ مجموعة لمناقشة التحديات والحلول</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-4 bg-blue-50 rounded-lg">
+                            <div class="text-blue-600 text-xl mr-4">3</div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">نشر محتوى احترافي على لينكدإن</h3>
+                                <p class="text-gray-600 text-sm">شارك مقالات وتحديثات مهنية منتظمة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Export Options -->
+            <section class="text-center fade-in-up">
+                <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg p-8 text-white">
+                    <h2 class="text-2xl font-bold mb-4">ماذا تريد أن تفعل بالنتائج؟</h2>
+                    <p class="text-blue-100 mb-6">اختر طريقة حفظ التحليل ومشاركته مع فريقك</p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="exportToPDF()" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                            📄 تحميل كملف PDF
+                        </button>
+                        <button onclick="copyToClipboard()" class="bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-400 transition-colors">
+                            📋 نسخ إلى الحافظة
+                        </button>
+                        <a href="questions.html" class="bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-400 transition-colors">
+                            🔄 تحليل جديد
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load answers from localStorage
+            const answers = JSON.parse(localStorage.getItem('audienceAnswers') || '{}');
+            
+            // Animate elements on load
+            const elements = document.querySelectorAll('.fade-in-up');
+            elements.forEach((element, index) => {
+                setTimeout(() => {
+                    element.classList.add('visible');
+                }, index * 200);
+            });
+
+            // Initialize engagement chart
+            initEngagementChart();
+            
+            // Update content based on answers
+            updateContentBasedOnAnswers(answers);
+        });
+
+        function initEngagementChart() {
+            const chartDom = document.getElementById('engagement-chart');
+            const myChart = echarts.init(chartDom);
+            
+            const option = {
+                title: {
+                    text: 'توقعات التفاعل على المنصات',
+                    left: 'center',
+                    textStyle: {
+                        fontSize: 16,
+                        fontWeight: 'bold'
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['انستجرام', 'فيسبوك', 'تويتر', 'لينكدإن'],
+                    axisLabel: {
+                        fontSize: 12
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: 'نسبة التفاعل (%)',
+                    axisLabel: {
+                        fontSize: 12
+                    }
+                },
+                series: [{
+                    data: [85, 65, 55, 75],
+                    type: 'bar',
+                    itemStyle: {
+                        color: function(params) {
+                            const colors = ['#1e3a8a', '#1e40af', '#3b82f6', '#60a5fa'];
+                            return colors[params.dataIndex];
+                        }
+                    },
+                    label: {
+                        show: true,
+                        position: 'top',
+                        formatter: '{c}%'
+                    }
+                }]
+            };
+            
+            myChart.setOption(option);
+        }
+
+        function updateContentBasedOnAnswers(answers) {
+            // Update executive summary based on answers
+            const summaryElement = document.getElementById('executive-summary');
+            if (answers['question-3'] === '26-35') {
+                summaryElement.innerHTML = summaryElement.innerHTML.replace('الشباب المهنيين من سن 26-35 سنة', '<span class="bg-blue-200 px-2 py-1 rounded font-semibold">الشباب المهنيين من سن 26-35 سنة</span>');
+            }
+        }
+
+        function exportToPDF() {
+            // Simulate PDF export
+            alert('جاري تحميل ملف PDF... سيتم تحميل الملف خلال لحظات.');
+            
+            // Create a temporary download link
+            const link = document.createElement('a');
+            link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(generateReportText());
+            link.download = 'تحليل-الجمهور-المستهدف.txt';
+            link.click();
+        }
+
+        function copyToClipboard() {
+            const reportText = generateReportText();
+            navigator.clipboard.writeText(reportText).then(() => {
+                alert('تم نسخ التقرير إلى الحافظة بنجاح!');
+            }).catch(() => {
+                alert('فشل في النسخ إلى الحافظة.');
+            });
+        }
+
+        function generateReportText() {
+            return `تحليل الجمهور المستهدف - د. عمرو جلال
+
+ملخص تنفيذي:
+جمهورك المثالي هم الشباب المهنيين من سن 26-35 سنة الذين يعيشون في المدن الكبرى ويبحثون عن حلول تساعدهم في توفير الوقت والجهد.
+
+شخصيات المشترين:
+1. سارة المهندس - مديرة تسويق 29 سنة
+2. أحمد المدير - رئيس قسم 34 سنة  
+3. ليلى رائدة الأعمال - صاحبة مشروع 31 سنة
+
+المنصات الم recomended:
+- انستجرام: ممتاز للمحتوى المرئي (85%)
+- لينكدإن: ممتاز للمحتوى الاحترافي (75%)
+- فيسبوك: جيد للمجتمعات (65%)
+- تويتر: جيد للتحديثات (55%)
+
+استراتيجية المحتوى:
+- فيديو: 60%
+- صور: 25%  
+- مقالات: 15%
+
+نبرة الصوت: احترافية وموثوقة، معلوماتية ومفيدة
+`;
+        }
+    </script>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="text-2xl font-bold gradient-text mb-4">👨‍💼 د. عمرو جلال</div>
+            <p class="text-gray-400 mb-2">استشاري تسويق وتحول رقمي - ماجستير إدارة أعمال</p>
+            <p class="text-gray-400 mb-2">🌐 <a href="https://www.amrgalal.net" class="text-blue-400 hover:text-blue-300">www.amrgalal.net</a></p>
+            <p class="text-gray-400">© 2024 جميع الحقوق محفوظة - د. عمرو جلال</p>
+        </div>
+    </footer>
+</body>
+</html>       
