@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحليل الجمهور المستهدف - أداة الذكاء الاصطناعي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        .hero-bg {
+            background: url('./resources/hero-bg.jpg') center/cover;
+            position: relative;
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(1px);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="text-2xl font-bold gradient-text">👨‍💼 د. عمرو جلال</div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4 space-x-reverse">
+                        <a href="#features" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">المميزات</a>
+                        <a href="#how-it-works" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">كيف تعمل</a>
+                        <a href="questions.html" class="bg-blue-800 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-900 transition-colors">ابدأ الآن</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg min-h-screen flex items-center justify-center pt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <div class="mb-8">
+                <div class="mb-8">
+                    <img src="./resources/amr-galal-avatar.jpg" alt="د. عمرو جلال" class="w-32 h-32 rounded-full mx-auto mb-6 object-cover shadow-lg">
+                    <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4 leading-tight">
+                        <span class="gradient-text">استشاري تسويق وتحول رقمي</span>
+                    </h1>
+                    <div class="text-xl text-gray-600 mb-6">
+                        <p class="mb-2">🎓 ماجستير إدارة أعمال</p>
+                        <p class="mb-2">🌍 ساعدت 100+ شركة حول العالم</p>
+                        <p>💡 متخصص في التسويق الرقمي وتحليل الجمهور</p>
+                    </div>
+                </div>
+                <p class="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+                    هذا التطبيق هو نتاج خبراتي العملية في مساعدة الشركات على تحديد جمهورها المستهدف بدقة وتحقيق أهدافها التجارية من خلال استراتيجيات تسويق فعالة.
+                </p>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+                <a href="questions.html" class="bg-blue-800 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-900 transition-all duration-300 transform hover:scale-105 pulse-animation">
+                    ابدأ التحليل الآن
+                </a>
+                <button onclick="scrollToFeatures()" class="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold border-2 border-blue-600 hover:bg-blue-50 transition-all duration-300">
+                    تعرف أكثر
+                </button>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <div class="bg-white rounded-lg p-6 shadow-lg card-hover floating">
+                    <div class="text-3xl font-bold text-blue-600 mb-2">+1000</div>
+                    <div class="text-gray-600">تحليل تم إجراؤها</div>
+                </div>
+                <div class="bg-white rounded-lg p-6 shadow-lg card-hover floating" style="animation-delay: 0.5s;">
+                    <div class="text-3xl font-bold text-blue-600 mb-2">95%</div>
+                    <div class="text-gray-600">دقة التحليل</div>
+                </div>
+                <div class="bg-white rounded-lg p-6 shadow-lg card-hover floating" style="animation-delay: 1s;">
+                    <div class="text-3xl font-bold text-blue-600 mb-2">3 دقائق</div>
+                    <div class="text-gray-600">وقت التحليل</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">لماذا تختار أداة تحليل الجمهور؟</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">حلول ذكية لتحليل جمهورك المستهدف باستخدام أحدث تقنيات الذكاء الاصطناعي</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-50 rounded-lg p-8 card-hover">
+                    <div class="text-4xl mb-4">🤖</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">ذكاء اصطناعي متقدم</h3>
+                    <p class="text-gray-600">تحليل ذكي يستخدم خوارزميات متقدمة لفهم جمهورك المستهدف وتحديد احتياجاته بدقة</p>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-8 card-hover">
+                    <div class="text-4xl mb-4">⚡</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">نتائج فورية</h3>
+                    <p class="text-gray-600">احصل على تحليل كامل لجمهورك في أقل من 3 دقائق مع تقارير قابلة للتنفيذ فورًا</p>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-8 card-hover">
+                    <div class="text-4xl mb-4">📊</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">تقارير احترافية</h3>
+                    <p class="text-gray-600">تحليلات شاملة تشمل الشخصيات المستهدفة، المنصات المفضلة، واستراتيجيات المحتوى</p>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-8 card-hover">
+                    <div class="text-4xl mb-4">🎯</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">استهداف دقيق</h3>
+                    <p class="text-gray-600">حدد جمهورك المثالي بدقة عالية لتحسين حملاتك الإعلانية وزيادة العائد على الاستثمار</p>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-8 card-hover">
+                    <div class="text-4xl mb-4">💡</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">اقتراحات ذكية</h3>
+                    <p class="text-gray-600">احصل على توصيات مخصصة للقنوات الإعلانية ونوع المحتوى الذي يناسب جمهورك</p>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-8 card-hover">
+                    <div class="text-4xl mb-4">📱</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">سهل الاستخدام</h3>
+                    <p class="text-gray-600">واجهة سهلة ومبسطة تعمل على جميع الأجهزة دون الحاجة لخبرة تقنية</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">كيف تعمل الأداة؟</h2>
+                <p class="text-xl text-gray-600">ثلاث خطوات بسيطة لتحصل على تحليل جمهورك المستهدف</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="bg-blue-800 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mx-auto mb-6">1</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">أجب عن الأسئلة</h3>
+                    <p class="text-gray-600">أجب عن مجموعة من الأسئلة الذكية حول منتجك أو خدمتك وجمهورك الحالي</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="bg-blue-800 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mx-auto mb-6">2</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">الذكاء الاصطناعي يحلل</h3>
+                    <p class="text-gray-600">يقوم الذكاء الاصطناعي بتحليل إجاباتك وتحديد أنماط الجمهور المثالي لك</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="bg-blue-800 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mx-auto mb-6">3</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">احصل على النتائج</h3>
+                    <p class="text-gray-600">احصل على تقرير كامل بشخصيات جمهورك وتوصيات للحملات الإعلانية</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-blue-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">مستعد لتحليل جمهورك المستهدف؟</h2>
+            <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">ابدأ الآن واحصل على تحليل احترافي لجمهورك في أقل من 3 دقائق</p>
+            <a href="questions.html" class="bg-white text-blue-800 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 inline-block">
+                ابدأ التحليل المجاني
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="text-2xl font-bold gradient-text mb-4">👨‍💼 د. عمرو جلال</div>
+            <p class="text-gray-400 mb-2">استشاري تسويق وتحول رقمي - ماجستير إدارة أعمال</p>
+            <p class="text-gray-400 mb-2">🌐 <a href="https://www.amrgalal.net" class="text-blue-400 hover:text-blue-300">www.amrgalal.net</a></p>
+            <p class="text-gray-400">© 2024 جميع الحقوق محفوظة - د. عمرو جلال</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll to features
+        function scrollToFeatures() {
+            document.getElementById('features').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        // Animate elements on scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.card-hover');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        }
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial state for animated elements
+            const cards = document.querySelectorAll('.card-hover');
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.6s ease';
+            });
+
+            // Animate hero elements
+            anime({
+                targets: '.gradient-text',
+                opacity: [0, 1],
+                translateY: [30, 0],
+                duration: 1000,
+                delay: 500,
+                easing: 'easeOutQuart'
+            });
+
+            anime({
+                targets: '.pulse-animation',
+                scale: [0.9, 1],
+                opacity: [0, 1],
+                duration: 800,
+                delay: 1000,
+                easing: 'easeOutQuart'
+            });
+
+            // Add scroll listener
+            window.addEventListener('scroll', animateOnScroll);
+            // Initial check
+            animateOnScroll();
+        });
+    </script>
+</body>
+</html>
