@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحليل الجمهور المستهدف - عمرو جلال</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&family=Noto+Sans+Arabic:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            font-family: 'Cairo', 'Noto Sans Arabic', 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            background-color: #f5f7fa;
+            color: #1f2937;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ==================== GENERAL STYLES ==================== */
+        button {
+            border: none;
+            cursor: pointer;
+            font-family: 'Cairo', 'Noto Sans Arabic', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 12px 24px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid #3b82f6;
+            color: #3b82f6;
+        }
+
+        .btn-outline:hover {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        select {
+            font-family: 'Cairo', 'Noto Sans Arabic', sans-serif;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 16px;
+            width: 100%;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* ==================== CONTAINER & PAGES ==================== */
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page {
+            display: none;
+            flex: 1;
+            width: 100%;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ==================== HOME PAGE ==================== */
+        .home-page {
+            flex-direction: column;
+            padding: 0;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
+            border-bottom: 1px solid #e5e7eb;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #3b82f6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero {
+            padding: 60px 24px;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #6b7280;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-right: auto;
+            margin-left: auto;
+            line-height: 1.7;
+        }
+
+        .hero .btn-primary {
+            width: fit-content;
+            margin: 0 auto 40px;
+            font-size: 18px;
+            padding: 14px 32px;
+            height: 50px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border-right: 4px solid #3b82f6;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .about-section {
+            background: white;
+            padding: 40px 24px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+            margin: 20px 0;
+        }
+
+        .about-section h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #1f2937;
+        }
+
+        .about-section p {
+            font-size: 16px;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto 15px;
+            line-height: 1.7;
+        }
+
+        .about-section a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .about-section a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: #1f2937;
+            color: #f3f4f6;
+            padding: 30px 24px;
+            text-align: center;
+            font-size: 14px;
+            margin-top: auto;
+        }
+
+        footer a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        /* ==================== Q&A PAGE ==================== */
+        .qa-page {
+            padding: 0;
+            flex-direction: column;
+        }
+
+        .progress-container {
+            background: white;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .progress-info {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
+            transition: width 0.3s ease;
+        }
+
+        .qa-content {
+            flex: 1;
+            padding: 40px 24px;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .chat-bubble-container {
+            margin-bottom: 20px;
+        }
+
+        .chat-bubble {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .bubble-bot {
+            justify-content: flex-start;
+        }
+
+        .bubble-content {
+            background-color: #f0f4ff;
+            color: #1f2937;
+            padding: 16px;
+            border-radius: 12px;
+            max-width: 90%;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .bubble-bot .bubble-content {
+            border-bottom-right-radius: 4px;
+        }
+
+        .question-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 16px;
+        }
+
+        .checkbox-group,
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .checkbox-item,
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .checkbox-item:hover,
+        .radio-item:hover {
+            background-color: #f0f4ff;
+        }
+
+        .checkbox-item input,
+        .radio-item input {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: #3b82f6;
+        }
+
+        .multi-field-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .multi-field-group .form-group {
+            grid-column: span 1;
+        }
+
+        .multi-field-group .form-group:nth-child(3),
+        .multi-field-group .form-group:nth-child(5) {
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 640px) {
+            .multi-field-group {
+                grid-template-columns: 1fr;
+            }
+
+            .multi-field-group .form-group {
+                grid-column: span 1;
+            }
+
+            .multi-field-group .form-group:nth-child(3),
+            .multi-field-group .form-group:nth-child(5) {
+                grid-column: span 1;
+            }
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .buttons-container button {
+            flex: 1;
+        }
+
+        /* ==================== RESULTS PAGE ==================== */
+        .results-page {
+            padding: 40px 24px;
+            overflow-y: auto;
+        }
+
+        .results-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .results-header {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 40px 24px;
+            text-align: center;
+        }
+
+        .results-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .results-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .results-content {
+            padding: 40px 24px;
+        }
+
+        .report-section {
+            margin-bottom: 40px;
+        }
+
+        .report-section h2 {
+            font-size: 24px;
+            color: #1f2937;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3b82f6;
+        }
+
+        .report-section h3 {
+            font-size: 18px;
+            color: #1f2937;
+            margin: 20px 0 10px 0;
+            font-weight: 700;
+        }
+
+        .report-section p {
+            font-size: 15px;
+            color: #4b5563;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .summary-text {
+            background-color: #f0f4ff;
+            padding: 20px;
+            border-right: 4px solid #3b82f6;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .persona-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .persona-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+        }
+
+        .persona-card h3 {
+            color: #3b82f6;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .persona-detail {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .persona-detail:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .persona-detail-label {
+            font-weight: 700;
+            color: #1f2937;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .persona-detail-value {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .recommendation-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .recommendation-list li {
+            padding: 12px;
+            margin-bottom: 8px;
+            background-color: #f9fafb;
+            border-right: 3px solid #3b82f6;
+            border-radius: 4px;
+            font-size: 15px;
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        .export-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 40px 0;
+            padding-top: 30px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .export-buttons button {
+            padding: 14px 20px;
+            font-size: 15px;
+            width: 100%;
+        }
+
+        .results-footer {
+            background-color: #f9fafb;
+            padding: 24px;
+            text-align: center;
+            font-size: 13px;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .results-footer p {
+            margin-bottom: 8px;
+        }
+
+        .results-footer a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* ==================== LOADING STATE ==================== */
+        .loading-state {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 24px;
+            text-align: center;
+        }
+
+        .loading-state.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e5e7eb;
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            font-size: 18px;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+
+        /* ==================== TOAST NOTIFICATION ==================== */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #10b981;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: slideInUp 0.3s ease;
+            z-index: 1000;
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .header {
+                padding: 12px 16px;
+            }
+
+            .logo {
+                font-size: 16px;
+            }
+
+            .hero {
+                padding: 40px 16px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .qa-content {
+                padding: 24px 16px;
+            }
+
+            .bubble-content {
+                max-width: 100%;
+            }
+
+            .results-header {
+                padding: 24px 16px;
+            }
+
+            .results-header h1 {
+                font-size: 24px;
+            }
+
+            .results-content {
+                padding: 24px 16px;
+            }
+
+            .report-section h2 {
+                font-size: 20px;
+            }
+
+            .export-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .buttons-container {
+                flex-direction: column;
+            }
+
+            .buttons-container button {
+                width: 100%;
+            }
+
+            footer {
+                padding: 20px 16px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: 24px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+                padding: 24px 16px;
+            }
+
+            .about-section {
+                padding: 24px 16px;
+            }
+
+            .about-section h2 {
+                font-size: 22px;
+            }
+
+            .toast {
+                right: 10px;
+                left: 10px;
+                bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HOME PAGE -->
+        <div class="page home-page active">
+            <div class="header">
+                <div class="logo">🎯 تحليل الجمهور المستهدف</div>
+            </div>
+
+            <div class="hero">
+                <h1>اعرف جمهورك المستهدف في 3 دقائق فقط 🎯</h1>
+                <p>أداة ذكية تستخدم الذكاء الاصطناعي لتساعدك في تحديد عملائك المثاليين، وتولّد لك تحليلًا احترافيًا يمكنك تحميله أو استخدامه مباشرة في حملاتك الإعلانية.</p>
+                <button class="btn-primary" onclick="goToQA()">ابدأ التحليل الآن →</button>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <h3>🤖 تحليل ذكي</h3>
+                    <p>يستخدم الذكاء الاصطناعي لفهم جمهورك بعمق وإنشاء توصيات احترافية</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📋 تقرير احترافي</h3>
+                    <p>تحليل شامل بصيغة احترافية جاهز للاستخدام في حملاتك التسويقية</p>
+                </div>
+                <div class="feature-card">
+                    <h3>👥 Buyer Personas</h3>
+                    <p>شخصيات العملاء المثالية مع وصف تفصيلي لكل منهما</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📥 تحميل PDF</h3>
+                    <p>احفظ التقرير كملف PDF احترافي أو انسخ النص مباشرة</p>
+                </div>
+            </div>
+
+            <div class="about-section">
+                <h2>منشئ هذه الأداة 🌟</h2>
+                <p><strong>عمرو جلال</strong> - استشاري تسويق وتحول رقمي (ماجستير إدارة أعمال)</p>
+                <p>ساعد مئات الشركات حول العالم لتحقيق أهدافها التجارية من خلال استراتيجيات تسويق مبتكرة وفعالة.</p>
+                <p>🌐 <a href="https://www.amrgalal.net" target="_blank">زيارة الموقع الرسمي: www.amrgalal.net</a></p>
+            </div>
+
+            <footer>
+                <p>© 2025 تم إنشاء هذا التطبيق بواسطة عمرو جلال</p>
+                <p>استشاري تسويق وتحول رقمي | <a href="https://www.amrgalal.net" target="_blank">www.amrgalal.net</a></p>
+            </footer>
+        </div>
+
+        <!-- Q&A PAGE -->
+        <div class="page qa-page">
+            <div class="progress-container">
+                <div class="progress-info">السؤال <span id="currentQuestion">1</span> من 7</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 14.28%;"></div>
+                </div>
+            </div>
+
+            <div class="qa-content">
+                <div class="chat-bubble-container" id="chatContainer"></div>
+
+                <div class="question-form" id="questionForm"></div>
+
+                <div class="buttons-container">
+                    <button class="btn-secondary" id="prevBtn" onclick="previousQuestion()" style="display:none;">← السابق</button>
+                    <button class="btn-primary" id="nextBtn" onclick="nextQuestion()">التالي →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTS PAGE -->
+        <div class="page results-page">
+            <div class="loading-state" id="loadingState">
+                <div class="spinner"></div>
+                <div class="loading-text">جاري إنشاء التحليل...</div>
+                <div style="font-size: 14px; color: #9ca3af;">يرجى الانتظار لحظات</div>
+            </div>
+
+            <div class="results-container" id="resultsContainer" style="display:none;">
+                <div class="results-header">
+                    <h1>تقرير تحليل الجمهور المستهدف</h1>
+                    <p id="reportDate"></p>
+                </div>
+
+                <div class="results-content" id="reportContent"></div>
+
+                <div class="results-footer">
+                    <div class="export-buttons">
+                        <button class="btn-primary" onclick="downloadPDF()">📥 تحميل PDF</button>
+                        <button class="btn-secondary" onclick="copyToClipboard()">📋 نسخ النص</button>
+                        <button class="btn-outline" onclick="startNewAnalysis()">🔄 تحليل جديد</button>
+                    </div>
+                    <p style="margin-top: 20px;">تم إنشاء هذا التحليل بواسطة <strong>عمرو جلال</strong> - استشاري تسويق وتحول رقمي</p>
+                    <p>🌐 <a href="https://www.amrgalal.net" target="_blank">www.amrgalal.net</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== STATE MANAGEMENT ====================
+        let currentQuestionIndex = 0;
+        let userAnswers = {};
+
+        const questions = [
+            {
+                id: 'q1',
+                arabic: 'صف منتجك أو خدمتك في جملة واحدة',
+                type: 'textarea',
+                placeholder: 'مثال: تطبيق لتوصيل الطعام الصحي في القاهرة'
+            },
+            {
+                id: 'q2',
+                arabic: 'ما أهم مشكلة يحلها منتجك أو خدمتك؟',
+                type: 'textarea',
+                placeholder: 'مثال: عدم توفر خيارات طعام صحي سريعة ومريحة'
+            },
+            {
+                id: 'q3',
+                arabic: 'من هو عميلك الحالي أو المتوقع؟',
+                type: 'multi-field',
+                fields: [
+                    {name: 'age', label: 'العمر', type: 'select', options: ['اختر العمر', '18-25', '26-35', '36-45', '46-55', '56+']},
+                    {name: 'gender', label: 'الجنس', type: 'select', options: ['اختر', 'ذكر', 'أنثى', 'الجميع']},
+                    {name: 'location', label: 'المنطقة الجغرافية', type: 'text', placeholder: 'مثال: القاهرة، مصر'},
+                    {name: 'interests', label: 'الاهتمامات', type: 'text', placeholder: 'مثال: الصحة، الرياضة، التكنولوجيا'},
+                    {name: 'income', label: 'مستوى الدخل', type: 'select', options: ['اختر المستوى', 'منخفض', 'متوسط', 'مرتفع', 'عالي جداً']}
+                ]
+            },
+            {
+                id: 'q4',
+                arabic: 'ما الذي يجعل العميل يشتري منك؟',
+                type: 'checkbox',
+                options: ['السعر', 'الجودة', 'البراند', 'السرعة', 'خدمة العملاء', 'الابتكار', 'أخرى']
+            },
+            {
+                id: 'q5',
+                arabic: 'ما المنصات التي يتواجد عليها عملاؤك عادة؟',
+                type: 'checkbox',
+                options: ['فيسبوك', 'إنستجرام', 'تيك توك', 'تويتر / X', 'لينكد إن', 'يوتيوب', 'سناب شات', 'جوجل']
+            },
+            {
+                id: 'q6',
+                arabic: 'ما نوع الرسائل التي تعتقد أنها تجذبهم أكثر؟',
+                type: 'radio',
+                options: ['رسائل عاطفية', 'رسائل عقلانية ومنطقية', 'رسائل فكاهية ومرحة', 'رسائل تعليمية', 'رسائل ملهمة']
+            },
+            {
+                id: 'q7',
+                arabic: 'ما هدفك من هذا التحليل؟',
+                type: 'checkbox',
+                options: ['زيادة المبيعات', 'تحديد نوع المحتوى المناسب', 'اختيار قنوات الإعلان', 'فهم الجمهور بشكل أعمق', 'بناء استراتيجية تسويقية']
+            }
+        ];
+
+        // ==================== NAVIGATION ====================
+        function goToQA() {
+            showPage('qa-page');
+            renderQuestion();
+        }
+
+        function showPage(pageClass) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.querySelector('.' + pageClass).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function nextQuestion() {
+            saveAnswer();
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion();
+            } else {
+                generateReport();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        }
+
+        function saveAnswer() {
+            const q = questions[currentQuestionIndex];
+
+            if (q.type === 'textarea') {
+                const textarea = document.querySelector('textarea');
+                userAnswers[q.id] = textarea ? textarea.value : '';
+            } else if (q.type === 'multi-field') {
+                userAnswers[q.id] = {};
+                q.fields.forEach(field => {
+                    const input = document.querySelector(`[name="${field.name}"]`);
+                    userAnswers[q.id][field.name] = input ? input.value : '';
+                });
+            } else if (q.type === 'checkbox') {
+                const checked = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+                userAnswers[q.id] = checked;
+            } else if (q.type === 'radio') {
+                const selected = document.querySelector('input[type="radio"]:checked');
+                userAnswers[q.id] = selected ? selected.value : '';
+            }
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestionIndex];
+            const chatContainer = document.getElementById('chatContainer');
+            const formContainer = document.getElementById('questionForm');
+
+            // Clear previous
+            chatContainer.innerHTML = '';
+            formContainer.innerHTML = '';
+
+            // Show question bubble
+            chatContainer.innerHTML = `<div class="chat-bubble bubble-bot"><div class="bubble-content">${q.arabic}</div></div>`;
+
+            // Render form
+            if (q.type === 'textarea') {
+                formContainer.innerHTML = `
+                    <div class="form-group">
+                        <textarea placeholder="${q.placeholder}" id="answer">${userAnswers[q.id] || ''}</textarea>
+                    </div>
+                `;
+            } else if (q.type === 'multi-field') {
+                let html = '<div class="multi-field-group">';
+                q.fields.forEach(field => {
+                    if (field.type === 'select') {
+                        html += `
+                            <div class="form-group">
+                                <label>${field.label}</label>
+                                <select name="${field.name}">
+                                    ${field.options.map(opt => `<option value="${opt}" ${(userAnswers[q.id]?.[field.name] === opt) ? 'selected' : ''}>${opt}</option>`).join('')}
+                                </select>
+                            </div>
+                        `;
+                    } else {
+                        html += `
+                            <div class="form-group">
+                                <label>${field.label}</label>
+                                <input type="text" name="${field.name}" placeholder="${field.placeholder}" value="${userAnswers[q.id]?.[field.name] || ''}">
+                            </div>
+                        `;
+                    }
+                });
+                html += '</div>';
+                formContainer.innerHTML = html;
+            } else if (q.type === 'checkbox') {
+                let html = '<div class="checkbox-group">';
+                q.options.forEach((option, idx) => {
+                    const checked = (userAnswers[q.id] || []).includes(option) ? 'checked' : '';
+                    html += `
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="${option}" ${checked}>
+                            <span>${option}</span>
+                        </label>
+                    `;
+                });
+                html += '</div>';
+                formContainer.innerHTML = html;
+            } else if (q.type === 'radio') {
+                let html = '<div class="radio-group">';
+                q.options.forEach((option, idx) => {
+                    const checked = userAnswers[q.id] === option ? 'checked' : '';
+                    html += `
+                        <label class="radio-item">
+                            <input type="radio" name="answer" value="${option}" ${checked}>
+                            <span>${option}</span>
+                        </label>
+                    `;
+                });
+                html += '</div>';
+                formContainer.innerHTML = html;
+            }
+
+            // Update progress
+            updateProgress();
+
+            // Update buttons
+            document.getElementById('prevBtn').style.display = currentQuestionIndex > 0 ? 'flex' : 'none';
+            document.getElementById('nextBtn').textContent = currentQuestionIndex === questions.length - 1 ? 'إنشاء التحليل ✓' : 'التالي →';
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+        }
+
+        // ==================== REPORT GENERATION ====================
+        function generateReport() {
+            saveAnswer();
+            showPage('results-page');
+
+            // Show loading
+            document.getElementById('loadingState').classList.add('active');
+            document.getElementById('resultsContainer').style.display = 'none';
+
+            // Simulate AI processing
+            setTimeout(() => {
+                const report = createReport();
+                displayReport(report);
+                document.getElementById('loadingState').classList.remove('active');
+                document.getElementById('resultsContainer').style.display = 'block';
+            }, 1500);
+        }
+
+        function createReport() {
+            const product = userAnswers.q1 || '';
+            const problem = userAnswers.q2 || '';
+            const audience = userAnswers.q3 || {};
+            const buyingFactors = userAnswers.q4 || [];
+            const platforms = userAnswers.q5 || [];
+            const messageType = userAnswers.q6 || '';
+            const goals = userAnswers.q7 || [];
+
+            // Create personas
+            const personas = generatePersonas(audience, buyingFactors, platforms, messageType);
+
+            // Create recommendations
+            const recommendations = generateRecommendations(buyingFactors, platforms, messageType);
+
+            return {
+                product,
+                problem,
+                audience,
+                buyingFactors,
+                platforms,
+                messageType,
+                goals,
+                personas,
+                recommendations
+            };
+        }
+
+        function generatePersonas(audience, buyingFactors, platforms, messageType) {
+            const personas = [];
+
+            // Persona 1
+            personas.push({
+                name: 'سارة - الأم العاملة',
+                age: audience.age || '30-40',
+                occupation: 'موظفة / رائدة أعمال',
+                description: 'أم عاملة تبحث عن التوازن بين العمل والحياة العائلية',
+                goals: ['توفير الوقت والجهد', 'الحصول على منتجات عالية الجودة', 'بناء مستقبل آمن للعائلة'],
+                painPoints: ['ضيق الوقت', 'الإرهاق من الروتين', 'البحث عن حلول فعالة'],
+                platforms: platforms.slice(0, 3).join(', '),
+                messageType: messageType || 'متوازنة',
+                advertisingStyle: 'رسائل عاطفية وملهمة تركز على سهولة الاستخدام والنتائج الفعالة'
+            });
+
+            // Persona 2
+            personas.push({
+                name: 'أحمد - رائد الأعمال',
+                age: audience.age || '25-35',
+                occupation: 'صاحب مشروع / رجل أعمال',
+                description: 'شاب طموح يبحث عن حلول فعالة لتنمية مشروعه والحصول على عائد أفضل',
+                goals: ['زيادة الأرباح', 'التوسع والنمو', 'بناء علامة تجارية قوية'],
+                painPoints: ['التكلفة المالية', 'المنافسة الشديدة', 'الافتقار للخبرة'],
+                platforms: platforms.slice(1, 4).join(', '),
+                messageType: messageType || 'عقلانية',
+                advertisingStyle: 'رسائل قائمة على الأرقام والنتائج مع تركيز على ROI والكفاءة'
+            });
+
+            // Persona 3 (if needed)
+            if (buyingFactors.length > 2 || platforms.length > 5) {
+                personas.push({
+                    name: 'فاطمة - الطالبة / الشابة',
+                    age: audience.age || '20-28',
+                    occupation: 'طالبة / موظفة شابة',
+                    description: 'شابة نشطة على وسائل التواصل تبحث عن قيمة مقابل المال والجودة',
+                    goals: ['تحقيق احلامها', 'بناء مسار وظيفي', 'التعلم والتطور'],
+                    painPoints: ['محدودية الميزانية', 'البحث عن الجودة بسعر معقول', 'عدم الثقة في المنتجات'],
+                    platforms: platforms.slice(0, 2).join(', '),
+                    messageType: messageType || 'فكاهية وودية',
+                    advertisingStyle: 'رسائل فكاهية وودية مع استخدام كثير من الفيديوهات والمحتوى المرح'
+                });
+            }
+
+            return personas;
+        }
+
+        function generateRecommendations(buyingFactors, platforms, messageType) {
+            const recommendations = {
+                channels: [],
+                tone: '',
+                contentTypes: [],
+                strategies: []
+            };
+
+            // Channels
+            if (platforms.includes('فيسبوك') || platforms.includes('إنستجرام')) {
+                recommendations.channels.push('إعلانات Meta (فيسبوك وإنستجرام) - تتمتع برقم جماهير ضخم وخيارات استهداف متقدمة');
+            }
+            if (platforms.includes('تيك توك')) {
+                recommendations.channels.push('إعلانات TikTok - مثالية للوصول إلى الأجيال الشابة مع محتوى مرح وجذاب');
+            }
+            if (platforms.includes('يوتيوب') || platforms.includes('جوجل')) {
+                recommendations.channels.push('إعلانات جوجل والفيديو - فعالة للوصول للعملاء ذوي نية الشراء الفوري');
+            }
+            if (platforms.includes('لينكد إن')) {
+                recommendations.channels.push('لينكد إن - مناسب للتسويق B2B والمحتوى الاحترافي');
+            }
+
+            // Tone of Voice
+            if (messageType.includes('عاطفية')) {
+                recommendations.tone = 'عاطفي وودود مع التركيز على الفوائد الإنسانية والتأثير الإيجابي';
+            } else if (messageType.includes('عقلانية')) {
+                recommendations.tone = 'احترافي ومباشر مع استخدام الأرقام والحقائق والإحصائيات';
+            } else if (messageType.includes('فكاهية')) {
+                recommendations.tone = 'خفيف وفكاهي مع استخدام الفكاهة الذكية والمحتوى الترفيهي';
+            } else {
+                recommendations.tone = 'متوازن وودود مع تجنب الفجاجة والتركيز على القيمة';
+            }
+
+            // Content Types
+            recommendations.contentTypes = [
+                'فيديوهات قصيرة وجذابة (15-30 ثانية)',
+                'صور عالية الجودة مع كتابة إقناعية',
+                'المحتوى التعليمي والنصائح المفيدة',
+                'قصص النجاح (Case Studies) والشهادات'
+            ];
+
+            // Strategies
+            recommendations.strategies = [
+                'بناء علاقة قوية مع الجمهور قبل البيع - استخدم 80/20 (80% قيمة مجانية، 20% بيع)',
+                'الاستفادة من قوة الكلام الشفهي والتوصيات من العملاء الحاليين',
+                'إنشاء مجتمع قوي حول العلامة التجارية على وسائل التواصل',
+                'اختبار ودراسة أنواع مختلفة من الرسائل والتصاميم للوصول للأفضل',
+                'الاستثمار في الإعلانات الممولة بميزانية تجريبية ثم التوسع بناءً على النتائج'
+            ];
+
+            return recommendations;
+        }
+
+        function displayReport(report) {
+            let html = '';
+
+            // Executive Summary
+            html += `
+                <div class="report-section">
+                    <h2>📊 الملخص التنفيذي</h2>
+                    <div class="summary-text">
+                        <p>جمهورك المستهدف هو مجموعة من الأفراد الذين يبحثون عن ${report.problem}. وفقاً لتحليلنا، فإن جمهورك المثالي يشترون بناءً على ${report.buyingFactors.join(', ')}، ويتواجدون بشكل أساسي على منصات ${report.platforms.join(', ')}.</p>
+                        <p>هدفهم الرئيسي من شراء منتجك هو ${report.goals.join(', ') || 'تحسين جودة الحياة والحصول على حلول فعالة'}. وينجذبون إلى الرسائل ذات الطابع ${report.messageType}.</p>
+                    </div>
+                </div>
+            `;
+
+            // Buyer Personas
+            html += '<div class="report-section"><h2>👥 شخصيات العملاء المثالية (Buyer Personas)</h2>';
+            report.personas.forEach(persona => {
+                html += `
+                    <div class="persona-card">
+                        <h3>${persona.name}</h3>
+                        <div class="persona-detail">
+                            <div class="persona-detail-label">🎯 الوصف</div>
+                            <div class="persona-detail-value">${persona.description}</div>
+                        </div>
+                        <div class="persona-detail">
+                            <div class="persona-detail-label">👤 العمر والمهنة</div>
+                            <div class="persona-detail-value">${persona.age} سنة - ${persona.occupation}</div>
+                        </div>
+                        <div class="persona-detail">
+                            <div class="persona-detail-label">🎯 الأهداف والدوافع</div>
+                            <div class="persona-detail-value">${persona.goals.join('، ')}</div>
+                        </div>
+                        <div class="persona-detail">
+                            <div class="persona-detail-label">😞 نقاط الألم</div>
+                            <div class="persona-detail-value">${persona.painPoints.join('، ')}</div>
+                        </div>
+                        <div class="persona-detail">
+                            <div class="persona-detail-label">📱 المنصات المفضلة</div>
+                            <div class="persona-detail-value">${persona.platforms}</div>
+                        </div>
+                        <div class="persona-detail">
+                            <div class="persona-detail-label">💬 نوع الرسائل المناسبة</div>
+                            <div class="persona-detail-value">${persona.messageType}</div>
+                        </div>
+                        <div class="persona-detail">
+                            <div class="persona-detail-label">📢 أسلوب الإعلان المقترح</div>
+                            <div class="persona-detail-value">${persona.advertisingStyle}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+
+            // Comprehensive Analysis
+            html += '<div class="report-section"><h2>📈 التحليل الشامل والتوصيات</h2>';
+
+            html += '<h3>📱 القنوات الإعلانية الأفضل</h3><ul class="recommendation-list">';
+            report.recommendations.channels.forEach(channel => {
+                html += `<li>${channel}</li>`;
+            });
+            html += '</ul>';
+
+            html += `<h3>🎤 نبرة الصوت الموصى بها</h3><p style="background-color: #f0f4ff; padding: 15px; border-radius: 8px; border-right: 3px solid #3b82f6;">${report.recommendations.tone}</p>`;
+
+            html += '<h3>🎨 أنواع المحتوى المقترحة</h3><ul class="recommendation-list">';
+            report.recommendations.contentTypes.forEach(content => {
+                html += `<li>${content}</li>`;
+            });
+            html += '</ul>';
+
+            html += '<h3>💡 التوصيات الاستراتيجية الإضافية</h3><ul class="recommendation-list">';
+            report.recommendations.strategies.forEach(strategy => {
+                html += `<li>${strategy}</li>`;
+            });
+            html += '</ul></div>';
+
+            document.getElementById('reportContent').innerHTML = html;
+            document.getElementById('reportDate').textContent = new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        // ==================== EXPORT FUNCTIONS ====================
+        function downloadPDF() {
+            const reportContent = document.getElementById('reportContent').innerText;
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            // Add title
+            doc.setFontSize(20);
+            doc.text('تقرير تحليل الجمهور المستهدف', doc.internal.pageSize.getWidth() / 2, 20, { align: 'center' });
+
+            // Add date
+            doc.setFontSize(10);
+            doc.text(new Date().toLocaleDateString('ar-EG'), doc.internal.pageSize.getWidth() / 2, 30, { align: 'center' });
+
+            // Add content
+            doc.setFontSize(11);
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const margin = 15;
+            let yPosition = 40;
+            const maxWidth = pageWidth - (2 * margin);
+
+            const lines = doc.splitTextToSize(reportContent, maxWidth);
+
+            lines.forEach(line => {
+                if (yPosition > pageHeight - 15) {
+                    doc.addPage();
+                    yPosition = 15;
+                }
+                doc.text(line, margin, yPosition, { align: 'right' });
+                yPosition += 5;
+            });
+
+            // Add footer
+            doc.setFontSize(8);
+            doc.text('تم إنشاء هذا التقرير بواسطة عمرو جلال - استشاري تسويق وتحول رقمي', doc.internal.pageSize.getWidth() / 2, pageHeight - 10, { align: 'center' });
+
+            doc.save('تحليل_الجمهور_المستهدف.pdf');
+            showToast('تم تحميل التقرير بنجاح ✓');
+        }
+
+        function copyToClipboard() {
+            const reportContent = document.getElementById('reportContent').innerText;
+            navigator.clipboard.writeText(reportContent).then(() => {
+                showToast('تم نسخ التحليل بنجاح ✓');
+            }).catch(err => {
+                console.error('خطأ في النسخ:', err);
+            });
+        }
+
+        function startNewAnalysis() {
+            currentQuestionIndex = 0;
+            userAnswers = {};
+            showPage('home-page');
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideInUp 0.3s ease reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
